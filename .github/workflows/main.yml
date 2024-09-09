@@ -1,0 +1,44 @@
+name: Deploy to Local IIS
+
+on:
+  push:
+    branches:
+      - main  # Replace with your branch name if different
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Install NuGet CLI
+      uses: nuget/setup-nuget@v1
+    
+    - name: Restore dependencies
+      run: nuget restore WebApplicationMy.sln
+
+
+    - name: Install MSBuild
+      uses: microsoft/setup-msbuild@v1
+      
+    - name: Build application
+      run: msbuild WebApplicationMy.sln /p:Configuration=Release
+      
+    - name: Publish application
+      run: |
+        msbuild "WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishUrl="D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\webdeploy\webdeploy\publish"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: webapp-publish
+        path: $(System.DefaultWorkingDirectory)/publish
+    
+    - name: publish
+      shell: cmd
+      run: |
+        iisreset /stop
+        xcopy /s /y $(System.DefaultWorkingDirectory)/publish/*  D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish 
+        iisreset /start
+        
