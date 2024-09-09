@@ -1,44 +1,40 @@
-name: Deploy to Local IIS
+name: Build and Publish .NET Framework 4.8
 
 on:
   push:
     branches:
-      - main  # Replace with your branch name if different
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build-and-deploy:
-    runs-on: self-hosted
+  build:
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Install NuGet CLI
-      uses: nuget/setup-nuget@v1
-    
-    - name: Restore dependencies
-      run: nuget restore WebApplicationMy.sln
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      # Setup .NET Framework 4.8 build environment
+      - name: Setup .NET Framework 4.8
+        run: |
+          Install-WindowsFeature -Name NET-Framework-Features
 
-    - name: Install MSBuild
-      uses: microsoft/setup-msbuild@v1
-      
-    - name: Build application
-      run: msbuild WebApplicationMy.sln /p:Configuration=Release
-      
-    - name: Publish application
-      run: |
-        msbuild "WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishUrl="D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\webdeploy\webdeploy\publish"
+      # Restore NuGet packages (if applicable)
+      - name: Restore NuGet packages
+        run: nuget restore
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: webapp-publish
-        path: $(System.DefaultWorkingDirectory)/publish
-    
-    - name: publish
-      shell: cmd
-      run: |
-        iisreset /stop
-        xcopy /s /y $(System.DefaultWorkingDirectory)/publish/*  D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish 
-        iisreset /start
-        
+      # Build the project
+      - name: Build solution using MSBuild
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" YourSolution.sln /p:Configuration=Release
+
+      # Publish artifacts (if applicable)
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            **/bin/Release/*
