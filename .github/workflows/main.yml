@@ -4,13 +4,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build-and-deploy:
+    runs-on: self-hosted
 
     steps:
       # Checkout the repository code
@@ -44,3 +41,16 @@ jobs:
           name: build-artifacts
           path: |
             **/bin/Release/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: webapp-publish
+          path: $(System.DefaultWorkingDirectory)/publish
+
+      - name: publish
+        shell: cmd
+        run: |
+          iisreset /stop
+          xcopy /s /y $(System.DefaultWorkingDirectory)/publish/*  D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish 
+          iisreset /start
