@@ -25,11 +25,17 @@ jobs:
       # Restore NuGet packages (if applicable)
       - name: Restore NuGet packages
         run: nuget restore
-
-      # Build the project
+        
+      - name: Find MSBuild Path
+        id: msbuild
+        run: |
+          $msbuildPath = & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          echo "MSBUILD_PATH=$msbuildPath" >> $env:GITHUB_ENV
+      
       - name: Build solution using MSBuild
         run: |
-          & "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" "WebApplicationMy.sln" /p:Configuration=Release
+          & $env:MSBUILD_PATH "WebApplicationMy.sln" /p:Configuration=Release
+
 
       # Publish artifacts (if applicable)
       - name: Publish artifacts
