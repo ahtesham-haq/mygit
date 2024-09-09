@@ -18,7 +18,10 @@ jobs:
       - name: Setup .NET Framework 4.8
         run: |
           Install-WindowsFeature -Name NET-Framework-Features
-
+      
+      - name: Install NuGet CLI
+        uses: nuget/setup-nuget@v1
+      
       # Restore NuGet packages (if applicable)
       - name: Restore NuGet packages
         run: nuget restore
