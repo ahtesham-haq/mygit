@@ -36,14 +36,17 @@ jobs:
         run: |
           & $env:MSBUILD_PATH "WebApplicationMy.sln" /p:Configuration=Release
 
-      - name: Publish .NET Project
-        run: dotnet publish -c Release -o $(System.DefaultWorkingDirectory)/publish
+      - name: Publish Project
+        run: msbuild YourProject.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=${{ github.workspace }}/publish
+
+      - name: List published files
+        run: dir ${{ github.workspace }}\publish
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: webapp-publish
-          path: $(System.DefaultWorkingDirectory)/publish
+          path: ${{ github.workspace }}/publish
 
 
       - name: publish
