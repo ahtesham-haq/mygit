@@ -36,20 +36,15 @@ jobs:
         run: |
           & $env:MSBUILD_PATH "WebApplicationMy.sln" /p:Configuration=Release
 
-
-      # Publish artifacts (if applicable)
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: |
-            **/bin/Release/*
+      - name: Publish .NET Project
+        run: dotnet publish -c Release -o $(System.DefaultWorkingDirectory)/publish
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: webapp-publish
           path: $(System.DefaultWorkingDirectory)/publish
+
 
       - name: publish
         shell: cmd
