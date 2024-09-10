@@ -46,7 +46,7 @@ jobs:
 
       - name: Copy published files
         run: |        
-          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\_PublishedWebsites\WebApplicationMy\*" -Destination "D:\TEMP\mygitnewdeploy" -Recurse -Force
+          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\_PublishedWebsites\WebApplicationMy\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
       
    
 
