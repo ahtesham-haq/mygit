@@ -25,26 +25,30 @@ jobs:
       # Restore NuGet packages (if applicable)
       - name: Restore NuGet packages
         run: nuget restore
-
+        
       - name: Find MSBuild Path
         id: msbuild
         run: |
           $msbuildPath = & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
           echo "MSBUILD_PATH=$msbuildPath" >> $env:GITHUB_ENV
-
+      
       - name: Build solution using MSBuild
         run: |
           & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
 
-      - name: Publish to folder using MSBuild
+      - name: List files in build output directory
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish"
+          Get-ChildItem -Path "${{ github.workspace }}/build_output" -Recurse
 
-      - name: List files in publish directory
+      - name: Copy build output to publish directory
         run: |
-          Get-ChildItem -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse
+          Copy-Item -Path "${{ github.workspace }}/build_output" -Destination "${{ github.workspace }}/publish" -Recurse -Force
 
-      # If needed: Copy files to another location
-      - name: Copy files from publish directory
-        run: |
-          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish\final_destination" -Recurse -Force
+      - name: Copy published files
+        run: |        
+          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\_PublishedWebsites\WebApplicationMy\*" -Destination "D:\TEMP\mygitnewdeploy" -Recurse -Force
+      
+   
+
+
+
