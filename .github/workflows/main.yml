@@ -34,11 +34,15 @@ jobs:
       
       - name: Build solution using MSBuild
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release
-      
-      - name: Copy published files
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
+
+      - name: List files in build output directory
         run: |
-          Copy-Item -Path "${{ github.workspace }}/WebApplicationMy/bin/Release" -Destination "${{ github.workspace }}/publish" -Recurse -Force
+          Get-ChildItem -Path "${{ github.workspace }}/build_output" -Recurse
+
+      - name: Copy build output to publish directory
+        run: |
+          Copy-Item -Path "${{ github.workspace }}/build_output" -Destination "${{ github.workspace }}/publish" -Recurse -Force
 
       - name: List published files
         run: dir ${{ github.workspace }}\publish
