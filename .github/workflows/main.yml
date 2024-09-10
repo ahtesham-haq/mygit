@@ -45,9 +45,8 @@ jobs:
           Copy-Item -Path "${{ github.workspace }}/build_output" -Destination "${{ github.workspace }}/publish" -Recurse -Force
 
       - name: Copy published files
-        run: |
-          
-Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\build_output\_PublishedWebsites\WebApplicationMy" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
+        run: |        
+          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\build_output\_PublishedWebsites\WebApplicationMy" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
