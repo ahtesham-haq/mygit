@@ -19,6 +19,7 @@ jobs:
         run: |
           Install-WindowsFeature -Name NET-Framework-Features
       
+      # Install NuGet CLI
       - name: Install NuGet CLI
         uses: nuget/setup-nuget@v1
       
@@ -26,30 +27,24 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore
         
+      # Find MSBuild Path
       - name: Find MSBuild Path
         id: msbuild
         run: |
           $msbuildPath = & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
           echo "MSBUILD_PATH=$msbuildPath" >> $env:GITHUB_ENV
       
+      # Build solution using MSBuild
       - name: Build solution using MSBuild
         run: |
           & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
 
+      # List files in build output directory
       - name: List files in build output directory
         run: |
           Get-ChildItem -Path "${{ github.workspace }}/build_output" -Recurse
 
+      # Copy build output to publish directory
       - name: Copy build output to publish directory
         run: |
-          Copy-Item -Path "${{ github.workspace }}/build_output" -Destination "${{ github.workspace }}/publish" -Recurse -Force
-
-      - name: Copy published files
-        run: |        
-          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\_PublishedWebsites\WebApplicationMy\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
-      
-   
-
-
-
-
+          Copy-Item -Path "${{ github.workspace }}/build_output\*" -Destination "${{ github.workspace }}/publish" -Recurse -Force
