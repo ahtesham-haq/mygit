@@ -43,6 +43,16 @@ jobs:
       - name: List files in build output directory
         run: |
           Get-ChildItem -Path "${{ github.workspace }}/build_output" -Recurse
+      
+      # Publish the application using MSBuild
+      - name: Publish application using MSBuild
+        run: |
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishUrl="${{ github.workspace }}/publish"
+
+      # List files in publish directory
+      - name: List files in publish directory
+        run: |
+          Get-ChildItem -Path "${{ github.workspace }}/publish" -Recurse
 
       # Copy build output to publish directory
       - name: Copy build output to publish directory
