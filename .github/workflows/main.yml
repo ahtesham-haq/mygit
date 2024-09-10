@@ -54,4 +54,5 @@ jobs:
       - name: publish
         shell: cmd
         run: |
-          xcopy /s /y $(System.DefaultWorkingDirectory)/publish/*  D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish 
+          xcopy /s /y "$(System.DefaultWorkingDirectory)/publish/*" "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish"
+ 
