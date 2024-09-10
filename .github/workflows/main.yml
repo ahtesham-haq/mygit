@@ -47,4 +47,4 @@ jobs:
       # Copy build output to publish directory
       - name: Copy build output to publish directory
         run: |
-          Copy-Item -Path "${{ github.workspace }}/build_output\*" -Destination "${{ github.workspace }}/publish" -Recurse -Force
+          Copy-Item -Path "${{ github.workspace }}/build_output\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
