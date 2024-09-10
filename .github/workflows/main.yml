@@ -34,7 +34,7 @@ jobs:
       
       - name: Build solution using MSBuild
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
 
       - name: List files in build output directory
         run: |
