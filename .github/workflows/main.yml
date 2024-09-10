@@ -54,4 +54,9 @@ jobs:
       - name: publish
         shell: cmd
         run: |
-          xcopy /s /y "$(System.DefaultWorkingDirectory)/publish/*" "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish\"
+          if exist "$(System.DefaultWorkingDirectory)/publish/*" (
+              xcopy /s /y "$(System.DefaultWorkingDirectory)/publish" "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish\"
+          ) else (
+              echo "No files to copy"
+          )
+
