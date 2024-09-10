@@ -36,10 +36,10 @@ jobs:
         run: |
           & $env:MSBUILD_PATH "WebApplicationMy.sln" /p:Configuration=Release
 
-      - name: Publish project using MSDeploy
+      - name: Copy published files
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.csproj" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="${{ github.workspace }}/publish" /p:WebPublishMethod=MSDeploy /p:DeployIisAppPath="Default Web Site/YourAppName"
-
+          Copy-Item -Path "${{ github.workspace }}/WebApplicationMy/bin/Release" -Destination "${{ github.workspace }}/publish" -Recurse -Force
+    
       - name: List published files
         run: dir ${{ github.workspace }}\publish
 
