@@ -46,8 +46,8 @@ jobs:
 
       - name: Copy published files
         run: |
-          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit/build_output" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit/publish" -Recurse -Force
-
+          
+Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\actions-runner\_work\mygit\mygit\publish\build_output\_PublishedWebsites\WebApplicationMy" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
