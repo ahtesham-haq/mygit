@@ -38,7 +38,7 @@ jobs:
 
       - name: Publish project using MSBuild
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.csproj" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="${{ github.workspace }}/publish" /verbosity:diagnostic
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.csproj" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="${{ github.workspace }}/publish" /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=true
 
       - name: List published files
         run: dir ${{ github.workspace }}\publish
