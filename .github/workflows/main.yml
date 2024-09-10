@@ -34,7 +34,7 @@ jobs:
       
       - name: Build solution using MSBuild
         run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy/WebApplicationMy.sln" /p:Configuration=Release
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release
       
       - name: Copy published files
         run: |
