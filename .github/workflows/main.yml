@@ -37,7 +37,7 @@ jobs:
           & $env:MSBUILD_PATH "WebApplicationMy.sln" /p:Configuration=Release
 
       - name: Publish Project
-        run: msbuild YourProject.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=${{ github.workspace }}/publish
+        run: msbuild WebApplicationMy.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=${{ github.workspace }}/publish
 
       - name: List published files
         run: dir ${{ github.workspace }}\publish
