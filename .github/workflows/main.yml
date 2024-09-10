@@ -19,42 +19,32 @@ jobs:
         run: |
           Install-WindowsFeature -Name NET-Framework-Features
       
-      # Install NuGet CLI
       - name: Install NuGet CLI
         uses: nuget/setup-nuget@v1
       
       # Restore NuGet packages (if applicable)
       - name: Restore NuGet packages
         run: nuget restore
-        
-      # Find MSBuild Path
+
       - name: Find MSBuild Path
         id: msbuild
         run: |
           $msbuildPath = & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
           echo "MSBUILD_PATH=$msbuildPath" >> $env:GITHUB_ENV
-      
-      # Build solution using MSBuild
+
       - name: Build solution using MSBuild
         run: |
           & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:OutputPath="${{ github.workspace }}/build_output"
 
-      # List files in build output directory
-      - name: List files in build output directory
+      - name: Publish to folder using MSBuild
         run: |
-          Get-ChildItem -Path "${{ github.workspace }}/build_output" -Recurse
-      
-      # Publish the application using MSBuild
-      - name: Publish application using MSBuild
-        run: |
-          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishUrl="${{ github.workspace }}/publish"
+          & $env:MSBUILD_PATH "${{ github.workspace }}/WebApplicationMy.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish"
 
-      # List files in publish directory
       - name: List files in publish directory
         run: |
-          Get-ChildItem -Path "${{ github.workspace }}/publish" -Recurse
+          Get-ChildItem -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse
 
-      # Copy build output to publish directory
-      - name: Copy build output to publish directory
+      # If needed: Copy files to another location
+      - name: Copy files from publish directory
         run: |
-          Copy-Item -Path "${{ github.workspace }}/build_output\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish" -Recurse -Force
+          Copy-Item -Path "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish\*" -Destination "D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\publish\final_destination" -Recurse -Force
