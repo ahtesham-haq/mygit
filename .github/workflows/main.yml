@@ -54,6 +54,4 @@ jobs:
       - name: publish
         shell: cmd
         run: |
-          iisreset /stop
           xcopy /s /y $(System.DefaultWorkingDirectory)/publish/*  D:\Ahtesham ul haq\Projects\Learning\Github\webdeploy\Publish 
-          iisreset /start
